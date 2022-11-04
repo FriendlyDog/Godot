@@ -1,0 +1,19 @@
+extends RigidBody2D
+
+var water_speed = 3000
+
+var water = preload("res://Objects/Water.tscn")
+
+func _physics_process(delta):
+	if Input.is_action_pressed("Left"):
+		rotate(-0.5)
+	if Input.is_action_pressed("Right"):
+		rotate(0.5)
+	if Input.is_action_pressed("Bottle_Shoot"):
+		var water_instance = water.instance()
+		water_instance.position = $Bottle/Nozzle.get_global_position()
+		water_instance.rotation_degrees = rotation_degrees
+		water_instance.apply_impulse(Vector2(), Vector2(0, water_speed).rotated(rotation))
+		get_tree().get_root().add_child(water_instance)
+		apply_impulse(Vector2(), Vector2(0, -water_speed / 150).rotated(rotation))
+
